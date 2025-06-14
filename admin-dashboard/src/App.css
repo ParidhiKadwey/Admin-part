@@ -1,0 +1,39 @@
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+}
+.main-content {
+  margin-top: 60px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+.main-content.with-sidebar {
+  margin-left: 240px;
+}
+
+/* Mobile (up to 600px) */
+@media (max-width: 600px) {
+  .main-content {
+    margin-left: 0 !important;
+    padding: 10px;
+  }
+}
+
+/* Tablet (601px to 1024px) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .main-content.with-sidebar {
+    margin-left: 180px;
+    padding: 16px;
+  }
+}
+
+/* Laptop/Desktop (above 1024px) */
+@media (min-width: 1025px) {
+  .main-content.with-sidebar {
+    margin-left: 240px;
+    padding: 20px;
+  }
+}
