@@ -1,4 +1,5 @@
 
+import SideBar from "./SideBar";
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ import {
   FaChevronRight
 } from "react-icons/fa";
 
+// const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 const SideNavbar = ({ isOpen }) => {
   const navigate = useNavigate();
   const [isUserDetailsOpen, setIsUserDetailsOpen] = useState(false);
