@@ -17,4 +17,6 @@ const SideBar = ({ isSidebarOpen, toggleSidebar }) => {
   );
 };
 
+
 export default SideBar;
+

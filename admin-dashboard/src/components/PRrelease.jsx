@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
+import axios from "axios";
+import API_URL from "../services/apiConfig";
 
 const PressReleaseManagement = () => {
   const [pressReleases, setPressReleases] = useState([]);
@@ -12,56 +14,40 @@ const PressReleaseManagement = () => {
     link: "",
     references: ""
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [expandedRows, setExpandedRows] = useState({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const token = sessionStorage.getItem("usertoken");
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const toggleRow = (index) => {
-    setExpandedRows(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
+  const fetchPressReleases = async (page = 1, limit = itemsPerPage) => {
+    try {
+      const res = await axios.get(`${API_URL}/press/?page=${page}&limit=${limit}`);
+      if (res.data.success) {
+        setPressReleases(res.data.docs);
+        setTotalPages(res.data.totalPages);
+        setCurrentPage(res.data.currentPage);
+      }
+    } catch (error) {
+      console.error("Error fetching press releases:", error);
+    }
   };
 
   useEffect(() => {
-    async function fetchPressReleases() {
-      try {
-        const response = await fetch("http://api.mptradeportal.org/pressrelease", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await response.json();
-        setPressReleases(data?.docs || []);
-      } catch (error) {
-        console.error("Error fetching press releases:", error);
-        setError("Failed to load press releases. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPressReleases();
-  }, [token]);
+    fetchPressReleases(currentPage, itemsPerPage);
+  }, [currentPage, itemsPerPage]);
 
   const handleAddPressRelease = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://api.mptradeportal.org/pressrelease/addPress", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(newPressRelease)
-      });
-
-      if (response.ok) {
-        const newItem = await response.json();
-        setPressReleases([...pressReleases, newItem]);
+      const payload = { ...newPressRelease };
+      const response = await axios.post(`${API_URL}/press/new/`, payload);
+      if (response.data.success) {
         setNewPressRelease({
           doc_name: "",
           heading: "",
@@ -70,188 +56,147 @@ const PressReleaseManagement = () => {
           link: "",
           references: ""
         });
+        fetchPressReleases(currentPage, itemsPerPage);
       }
     } catch (error) {
       console.error("Error adding press release:", error);
-      alert("Failed to add press release. Please try again.");
     }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this press release?")) return;
-    
     try {
-      const response = await fetch(`http://api.mptradeportal.org/pressrelease/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      if (response.ok) {
-        setPressReleases(pressReleases.filter(item => item._id !== id));
+      const res = await axios.delete(`${API_URL}/press/${id}`);
+      if (res.data.success) {
+        setPressReleases((prev) => prev.filter(item => item._id !== id));
       }
     } catch (error) {
       console.error("Error deleting press release:", error);
-      alert("Failed to delete press release. Please try again.");
     }
+  };
+
+  const handlePageSizeChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setCurrentPage(1);
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
     <div className="dashboard-container">
-      {/* Left Sidebar */}
       <div className={`side-nav-container ${isSidebarOpen ? 'open' : 'closed'}`}>
         <SideNavBar isOpen={isSidebarOpen} />
       </div>
 
-      {/* Main Content Area */}
       <div className={`main-content-area ${!isSidebarOpen ? 'expanded' : ''}`}>
-        {/* Top Navigation */}
         <div className="top-sidebar-container">
           <SideBar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         </div>
 
-        {/* Page Content */}
         <div className="padding-container">
           <div className="content-area">
-            {/* {loading ? (
-              <div className="loading-spinner"></div>
-            ) : error ? (
-              <div className="error-message">{error}</div>
-            ) : ( */}
-              <div className="press-release-content">
-                {/* Add Press Release Form */}
-                <div className="content-card">
-                  <div className="card-header">
-                    <h2 className="page-title">Add New Press Release</h2>
-                  </div>
-                  <div className="card-body">
-                    <form onSubmit={handleAddPressRelease}>
-                      <div className="form-grid">
-                        {Object.keys(newPressRelease).map((key) => (
-                          <div className="form-group" key={key}>
-                            <label>{key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</label>
-                            {key === "content" ? (
-                              <textarea
-                                className="form-control"
-                                placeholder={`Enter ${key.replace("_", " ")}`}
-                                value={newPressRelease[key]}
-                                onChange={(e) =>
-                                  setNewPressRelease({ ...newPressRelease, [key]: e.target.value })
-                                }
-                                required
-                                rows="4"
-                              />
-                            ) : (
-                              <input
-                                type={key === "link" ? "url" : "text"}
-                                className="form-control"
-                                placeholder={`Enter ${key.replace("_", " ")}`}
-                                value={newPressRelease[key]}
-                                onChange={(e) =>
-                                  setNewPressRelease({ ...newPressRelease, [key]: e.target.value })
-                                }
-                                required
-                              />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      <div className="form-actions">
-                        <button type="submit" className="action-btn primary-btn">
-                          Save Press Release
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
+            <div className="content-card">
+              <h2 className="page-title">Press Release Management</h2>
 
-                {/* List of Press Releases */}
-                <div className="content-card">
-                  <div className="card-header">
-                    <h2 className="page-title">Press Releases</h2>
-                    <div className="total-items">{pressReleases.length} press releases found</div>
-                  </div>
-                  <div className="card-body">
-                    <div className="table-section">
-                      <div className="table-card">
-                        <div className="table-responsive">
-                          <table className="participants-table">
-                            <thead>
-                              <tr>
-                                <th>SNo.</th>
-                                <th>Doc Name</th>
-                                <th>Heading</th>
-                                <th>Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {pressReleases.length > 0 ? (
-                                pressReleases.map((p, index) => (
-                                  <React.Fragment key={p._id || index}>
-                                    <tr>
-                                      <td>{index + 1}</td>
-                                      <td>{p.doc_name}</td>
-                                      <td>{p.heading}</td>
-                                      <td className="actions-cell">
-                                        <button 
-                                          className="action-btn toggle-btn"
-                                          onClick={() => toggleRow(index)}
-                                        >
-                                          {expandedRows[index] ? '▲ Hide Details' : '▼ Show Details'}
-                                        </button>
-                                        <button 
-                                          className="action-btn delete-btn"
-                                          onClick={() => handleDelete(p._id)}
-                                        >
-                                          Delete
-                                        </button>
-                                      </td>
-                                    </tr>
-                                    {expandedRows[index] && (
-                                      <tr className="expanded-row">
-                                        <td colSpan="4">
-                                          <div className="details-container">
-                                            <div className="detail-item">
-                                              <strong>Content:</strong>
-                                              <p>{p.content}</p>
-                                            </div>
-                                            <div className="detail-item">
-                                              <strong>Meta Data:</strong>
-                                              <p>{p.meta_data}</p>
-                                            </div>
-                                            <div className="detail-item">
-                                              <strong>Link:</strong>
-                                              {p.link && (
-                                                <a href={p.link} target="_blank" rel="noopener noreferrer" className="link-btn">
-                                                  View Link
-                                                </a>
-                                              )}
-                                            </div>
-                                            <div className="detail-item">
-                                              <strong>References:</strong>
-                                              <p>{p.references}</p>
-                                            </div>
-                                          </div>
-                                        </td>
-                                      </tr>
-                                    )}
-                                  </React.Fragment>
-                                ))
-                              ) : (
-                                <tr>
-                                  <td colSpan="4" className="no-data">
-                                    No press releases available
-                                  </td>
-                                </tr>
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
+              <div className="form-section">
+                <div className="form-card">
+                  <h3>Add New Press Release</h3>
+                  <form onSubmit={handleAddPressRelease}>
+                    {Object.keys(newPressRelease).map((key) => (
+                      <div className="form-group" key={key}>
+                        <label>{key.replace(/_/g, ' ').toUpperCase()}</label>
+                        {key === "content" ? (
+                          <textarea
+                            value={newPressRelease[key]}
+                            onChange={(e) => setNewPressRelease({ ...newPressRelease, [key]: e.target.value })}
+                            required
+                          />
+                        ) : (
+                          <input
+                            type={key === "link" ? "url" : "text"}
+                            value={newPressRelease[key]}
+                            onChange={(e) => setNewPressRelease({ ...newPressRelease, [key]: e.target.value })}
+                            required
+                          />
+                        )}
                       </div>
-                    </div>
-                  </div>
+                    ))}
+                    <button type="submit" className="action-btn primary-btn">Add Press Release</button>
+                  </form>
                 </div>
               </div>
-            {/* // )} */}
+
+              {/* Table */}
+              <div className="table-section">
+                <div className="table-card">
+                  <div className="d-flex justify-between align-items-center mb-3">
+                    <h3>Existing Press Releases</h3>
+                    <div className="page-size-control">
+                      <label>Items per page: </label>
+                      <select value={itemsPerPage} onChange={handlePageSizeChange}>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <table className="participants-table">
+                    <thead>
+                      <tr>
+                        <th>SNo.</th>
+                        <th>Doc Name</th>
+                        <th>Heading</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pressReleases.length > 0 ? (
+                        pressReleases.map((item, index) => (
+                          <tr key={item._id}>
+                            <td>{index + 1}</td>
+                            <td>{item.doc_name}</td>
+                            <td>{item.heading}</td>
+                            <td>
+                              <button onClick={() => handleDelete(item._id)} className="action-btn delete-btn">Delete</button>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="4">No Press Releases Found</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+
+                  {/* Pagination */}
+                  <div className="pagination">
+                    <button onClick={handlePrev} disabled={currentPage === 1}>Previous</button>
+
+                    {[...Array(totalPages)].map((_, i) => (
+                      <button
+                        key={i + 1}
+                        className={currentPage === i + 1 ? 'active' : ''}
+                        onClick={() => setCurrentPage(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+
+                    <button onClick={handleNext} disabled={currentPage === totalPages}>Next</button>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>

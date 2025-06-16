@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
+import axios from "axios";
+
+
 
 const FAQManagement = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,7 +22,7 @@ const FAQManagement = () => {
     async function fetchFAQs() {
       try {
         setIsLoading(true);
-        const response = await fetch("http://api.mptradeportal.org/faq", {
+        const response = await axios.get(`${API_URL}/ita/faq/${uid}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await response.json();
@@ -37,7 +40,7 @@ const FAQManagement = () => {
   const handleAddFAQ = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://api.mptradeportal.org/faq/addFAQ", {
+      const response = await axios.post(`${API_URL}/ita/faq`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +61,7 @@ const FAQManagement = () => {
   const handleDelete = async (uid) => {
     if (window.confirm("Are you sure you want to delete this FAQ?")) {
       try {
-        const response = await fetch(`http://api.mptradeportal.org/faq/${uid}`, {
+        const response = await axios.get(`${API_URL}/ita/faq/${uid}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` }
         });

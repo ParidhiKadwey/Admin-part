@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
+import axios from "axios";
+import API_URL from "../services/apiConfig";
 
 const AdminUserList = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -12,28 +14,27 @@ const AdminUserList = () => {
   };
 
   useEffect(() => {
-    async function fetchUsers() {
+    const fetchUsers = async () => {
       try {
-        const response = await fetch("http://api.mptradeportal.org/user/admin", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await response.json();
-        setUsers(data?.docs || []);
+        const response = await axios.get(`${API_URL}/user/admins`);
+        setUsers(response.data?.data || []);
       } catch (error) {
-        console.error("Failed to fetch users:", error);
+        console.error("Failed to fetch admin users:", error);
       }
-    }
+    };
+
     fetchUsers();
   }, [token]);
 
   const handleDeactivate = async (uid) => {
     try {
-      const response = await fetch(`http://api.mptradeportal.org/user/admin/${uid}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await axios.delete(`${API_URL}/user/admins/${uid}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (response.ok) {
-        setUsers(users.filter((user) => user._id !== uid));
+      if (response.status === 200) {
+        setUsers(prevUsers => prevUsers.filter(user => user._id !== uid));
       }
     } catch (error) {
       console.error("Failed to deactivate user:", error);
@@ -42,24 +43,22 @@ const AdminUserList = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Left Sidebar */}
+      {/* Sidebar */}
       <div className={`side-nav-container ${isSidebarOpen ? 'open' : 'closed'}`}>
         <SideNavBar isOpen={isSidebarOpen} />
       </div>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <div className={`main-content-area ${!isSidebarOpen ? 'expanded' : ''}`}>
-        {/* Top Navigation */}
         <div className="top-sidebar-container">
           <SideBar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         </div>
 
-        {/* Page Content */}
         <div className="padding-container">
           <div className="content-area">
             <div className="content-card">
               <h2 className="page-title">Registered Admin Users</h2>
-              
+
               <div className="table-responsive">
                 <table className="participants-table">
                   <thead>
@@ -75,18 +74,18 @@ const AdminUserList = () => {
                   </thead>
                   <tbody>
                     {users.length > 0 ? (
-                      users.map((r, index) => (
-                        <tr key={r._id}>
+                      users.map((user, index) => (
+                        <tr key={user._id}>
                           <td>{index + 1}</td>
-                          <td>{r.firstName + " " + r.lastName}</td>
-                          <td>{r.email}</td>
-                          <td>{r.country}</td>
-                          <td>{r.companyName}</td>
-                          <td>{r.companyRole}</td>
+                          <td>{`${user.firstName} ${user.lastName}`}</td>
+                          <td>{user.email}</td>
+                          <td>{user.country}</td>
+                          <td>{user.companyName}</td>
+                          <td>{user.companyRole}</td>
                           <td>
-                            <button 
+                            <button
                               className="action-btn delete-btn"
-                              onClick={() => handleDeactivate(r._id)}
+                              onClick={() => handleDeactivate(user._id)}
                             >
                               Deactivate
                             </button>
@@ -103,6 +102,7 @@ const AdminUserList = () => {
                   </tbody>
                 </table>
               </div>
+
             </div>
           </div>
         </div>
