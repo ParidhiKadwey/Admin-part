@@ -6,7 +6,7 @@ const MarketInfo = () => {
   const [marketData, setMarketData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const token = sessionStorage.getItem("usertoken");
 
   const toggleSidebar = () => {

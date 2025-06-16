@@ -4458,3 +4458,443 @@ textarea.form-control {
     padding: 8px 10px;
   }
 }
+
+/* ===== Base Responsive Styles ===== */
+@media (max-width: 1200px) {
+  .content-card {
+    padding: 15px;
+  }
+  
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  /* Sidebar becomes overlay on mobile */
+  .side-nav-container {
+    position: fixed;
+    z-index: 1000;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .side-nav-container.open {
+    transform: translateX(0);
+  }
+  
+  .main-content-area {
+    margin-left: 0 !important;
+  }
+  
+  /* Table adjustments */
+  .participants-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  /* Form adjustments */
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Card header adjustments */
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .total-items {
+    align-self: flex-start;
+  }
+  
+  /* Table cell padding */
+  .participants-table th,
+  .participants-table td {
+    padding: 8px 10px;
+  }
+  
+  /* Action buttons stack vertically */
+  .actions-cell {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  /* Form controls full width */
+  .form-control {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Padding adjustments */
+  .padding-container {
+    padding: 10px;
+  }
+  
+  /* Font size adjustments */
+  .page-title {
+    font-size: 20px;
+  }
+  
+  /* Modal adjustments */
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+}
+/* Mobile Menu Toggle */
+.mobile-menu-toggle {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .mobile-menu-toggle {
+    display: block;
+    padding: 10px;
+  }
+  
+  .menu-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #2c3e50;
+    cursor: pointer;
+  }
+}
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+  .participants-table {
+    min-width: 600px; /* Force horizontal scroll */
+  }
+  
+  /* Optional: Make table cells stack vertically */
+  .stackable-table {
+    min-width: auto;
+  }
+  
+  .stackable-table thead {
+    display: none;
+  }
+  
+  .stackable-table tr {
+    display: block;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+  }
+  
+  .stackable-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .stackable-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    margin-right: 10px;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 15px;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 576px) {
+  .modal-content {
+    max-height: 95vh;
+  }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 15px;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 576px) {
+  .modal-content {
+    max-height: 95vh;
+  }
+}
+/* Mobile Responsive Styles */
+@media (max-width: 991px) {
+  .side-nav-container {
+    position: fixed;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .side-nav-container.open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  .main-content-area {
+    margin-left: 0 !important;
+  }
+  
+  /* Table responsiveness */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .participants-table {
+    min-width: 600px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .action-btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 992px) {
+  .side-nav-container {
+    transform: translateX(0) !important;
+  }
+  
+  .side-nav-container.closed {
+    width: 70px;
+  }
+  
+  .main-content-area.expanded {
+    margin-left: 70px;
+  }
+}
+/* css - hamburger - responsic=ve  */
+/* Top Bar Styles - Highest Priority */
+.top-sidebar-container {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  background: #d32f2f; /* Red background */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Highest z-index to ensure it stays on top */
+}
+
+.header-menu-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 15px;
+}
+
+/* Sidebar Styles - Secondary Priority */
+.side-nav-container {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  background: white;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  top: 60px; /* Starts below the top bar */
+  left: 0;
+  z-index: 900; /* Lower than top bar */
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.side-nav-container.closed {
+  transform: translateX(-100%);
+}
+
+/* Main Content Area */
+.main-content-area {
+  margin-left: 250px;
+  margin-top: 60px; /* Account for top bar */
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 60px);
+}
+
+.main-content-area.expanded {
+  margin-left: 0;
+}
+
+/* Navigation Items */
+.nav-item {
+  color: #333;
+  padding: 12px 20px;
+  display: block;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.nav-item:hover {
+  background: #f5f5f5;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 991px) {
+  .side-nav-container {
+    transform: translateX(-100%);
+    top: 60px; /* Still below top bar */
+  }
+  
+  .side-nav-container.open {
+    transform: translateX(0);
+  }
+  
+  .main-content-area {
+    margin-left: 0;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 992px) {
+  .side-nav-container {
+    transform: translateX(0) !important;
+  }
+  
+  .side-nav-container.closed {
+    width: 70px;
+  }
+  
+  .main-content-area.expanded {
+    margin-left: 70px;
+  }
+}
+
+/* Additional Top Bar Elements */
+.top-bar-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.top-bar-title {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+/* Ensure content doesn't hide behind top bar */
+body {
+  padding-top: 60px;
+}
+.sidebar-logo {
+    max-width: 50%;
+  max-height: 50%;
+  object-fit: contain;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+  transform: translate(0, 0); /* Ensures perfect centering */
+  image-orientation: from-image;
+}
+/* Smooth scrolling */
+.nav-items-container {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar styling (optional) */
+.nav-items-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nav-items-container::-webkit-scrollbar-thumb {
+  background: #d1d1d1;
+  border-radius: 3px;
+}
+
+.nav-items-container::-webkit-scrollbar-thumb:hover {
+  background: #b1b1b1;
+}
+.sidebar-nav{
+  flex: 1; /* Takes all available space */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-bottom: 30px; /* Extra space at bottom */
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #d1d1d1 transparent; /* For Firefox */
+  margin-bottom: 10px;
+}

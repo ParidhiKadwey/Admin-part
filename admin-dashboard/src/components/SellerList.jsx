@@ -6,7 +6,7 @@ import SideNavBar from "./SideNavBar";
 const SellerList = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [error, setError] = useState(null);
   const token = sessionStorage.getItem("usertoken");
   const navigate = useNavigate();

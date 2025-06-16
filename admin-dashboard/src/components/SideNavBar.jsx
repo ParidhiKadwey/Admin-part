@@ -35,10 +35,16 @@ const SideNavbar = ({ isOpen }) => {
   };
 
   return (
-    <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
+    <div className={`sidebar ${isOpen ? "open" : "closed"}` }>
       <div className="sidebar-header">
         <h3 className="text-center">Admin</h3>
         <p className="text-center">MP Trade Portal</p>
+        <img 
+          src="/logo.png" // Update with your actual logo path
+          alt="MP Trade Portal Logo"
+          className="sidebar-logo img-center"
+    />
+        
       </div>
 
       <nav className="sidebar-nav">
@@ -144,44 +150,44 @@ const SideNavbar = ({ isOpen }) => {
             </li>
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/faq")}>
-                <span className="icon"><FaQuestionCircle /></span>
-                <span>FAQ</span>
+                <span className="nav-icon"><FaQuestionCircle /></span>
+                {isOpen && <span>FAQ</span>}
               </button>
             </li>
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/PRRealease")}>
-                <span className="icon"><FaNewspaper /></span>
-                <span>Press Release</span>
+                <span className="nav-icon"><FaNewspaper /></span>
+                {isOpen && <span>Press Release</span>}
               </button>
             </li> 
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/ContactUs")}>
-                <span className="icon"><FaEnvelope /></span>
-                <span>Connection Request</span>
+                <span className="nav-icon"><FaEnvelope /></span>
+                {isOpen && <span>Connection Request</span>}
               </button>
             </li>
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/MarketInformation")}>
-                <span className="icon"><FaChartLine /></span>
-                <span>Market Info</span>
+                <span className="nav-icon"><FaChartLine /></span>
+                {isOpen && <span>Market Info</span>}
               </button>
             </li>
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/UploadDocument")}>
-                <span className="icon"><FaUpload /></span>
-                <span>Document Upload</span>
+                <span className="nav-icon"><FaUpload /></span>
+                {isOpen && <span>Document Upload</span>}
               </button>
             </li>
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/Meetings")}>
-                <span className="icon"><FaCalendarAlt /></span>
-                <span>Meetings</span>
+                <span className="nav-icon"><FaCalendarAlt /></span>
+                {isOpen && <span>Meetings</span>}
               </button>
             </li>
             <li>
               <button className="nav-item" onClick={() => handleNavigation("/Homepage")}>
-                <span className="icon"><FaSignOutAlt /></span>
-                <span>Logout</span>
+                <span className="nav-icon"><FaSignOutAlt /></span>
+                {isOpen && <span>Logout</span>}
               </button>
             </li>
            

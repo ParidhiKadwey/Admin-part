@@ -24,7 +24,7 @@ const DocumentUploadComponent = () => {
     tab: '0'
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 

@@ -3,7 +3,7 @@ import SideNavBar from './SideNavBar';
 import SideBar from './SideBar'; 
 
 const HSCodeManagement = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hsCodes, setHsCodes] = useState([]);
   const [newHSCode, setNewHSCode] = useState({ code: "", detail: "" });
   const token = sessionStorage.getItem("usertoken");

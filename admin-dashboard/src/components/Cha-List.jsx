@@ -1,7 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
+
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"; 
 
 const UserTable = ({ users }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -12,7 +14,7 @@ const UserTable = ({ users }) => {
   };
 
   const handleAction = (userId, actionType) => {
-    const user = users.find(u => u._id === userId);
+  const user = users.find(u => u._id === userId);
     if (!user) return;
 
     if (actionType === 'deactivate') {
@@ -59,7 +61,7 @@ const UserTable = ({ users }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {users.length > 0 ? (
+                    {users && users.length > 0 ? (
                       users.map((user, index) => (
                         <tr key={user._id}>
                           <td>{index + 1}</td>

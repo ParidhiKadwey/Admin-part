@@ -4,7 +4,7 @@ import SideBar from './SideBar';
 import SideNavBar from "./SideNavBar";
 
 const AdminUserList = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const token = sessionStorage.getItem("usertoken");

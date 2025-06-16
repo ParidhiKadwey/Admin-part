@@ -4,7 +4,7 @@ import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
 
 const MeetingsList = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

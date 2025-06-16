@@ -3,7 +3,7 @@ import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
 
 const AdminUserList = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [users, setUsers] = useState([]);
   const token = sessionStorage.getItem("usertoken");
 

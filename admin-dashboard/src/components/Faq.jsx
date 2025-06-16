@@ -4,7 +4,7 @@ import SideNavBar from './SideNavBar';
 import SideBar from './SideBar';
 
 const FAQManagement = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [faqs, setFaqs] = useState([]);
   const [newFAQ, setNewFAQ] = useState({ question: "", answer: "", segment: "" });
   const [isLoading, setIsLoading] = useState(true);

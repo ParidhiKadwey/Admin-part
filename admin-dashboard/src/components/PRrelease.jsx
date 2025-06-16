@@ -15,7 +15,7 @@ const PressReleaseManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedRows, setExpandedRows] = useState({});
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const token = sessionStorage.getItem("usertoken");
 
   const toggleSidebar = () => {

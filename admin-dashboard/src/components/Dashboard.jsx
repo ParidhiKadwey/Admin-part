@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 
 
 const Dashboard = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [participants] = useState([
     {
       _id: '1',
