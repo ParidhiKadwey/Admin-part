@@ -6,26 +6,8 @@ import { FaSearch } from 'react-icons/fa';
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [participants] = useState([
-    {
-      _id: '1',
-      name: 'Rahul Sharma',
-      phone: '9876543210',
-      email: 'rahul@example.com',
-      designation: 'Marketing Manager',
-      name_of_org: 'ABC Corp',
-      consent: 'Yes'
-    },
-    {
-      _id: '2',
-      name: 'Priya Patel',
-      phone: '8765432109',
-      email: 'priya@example.com',
-      designation: 'Sales Executive',
-      name_of_org: 'XYZ Ltd',
-      consent: 'No'
-    }
-  ]);
+  
+  
   const [searchTerm, setSearchTerm] = useState('');
 
   const toggleSidebar = () => {
@@ -93,7 +75,7 @@ const Dashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {participants.map((p, index) => (
+                    {/* {participants.map((p, index) => (
                       <tr key={p._id}>
                         <td>{index + 1}</td>
                         <td>{p.name}</td>
@@ -102,16 +84,16 @@ const Dashboard = () => {
                         <td>{p.designation}</td>
                         <td>{p.name_of_org}</td>
                         <td>{p.consent}</td>
-                        <td>
-                          <button 
+                        <td> */}
+                          {/* <button 
                             className="action-btn delete-btn"
                             onClick={() => handleDelete(p._id)}
                           >
                             Delete
                           </button>
                         </td>
-                      </tr>
-                    ))}
+                      </tr> */}
+                    {/* ))} */}
                   </tbody>
                 </table>
               </div>
